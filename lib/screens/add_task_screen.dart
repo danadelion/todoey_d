@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_d/models/task_data.dart';
 import 'package:todoey_d/models/task.dart';
 
 class AddTaskScreen extends StatelessWidget {
@@ -42,20 +44,23 @@ class AddTaskScreen extends StatelessWidget {
                 },
               ),
             ),
-            Expanded(
-              child: TextButton(
-                child: Text(
-                  'Add',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+            TextButton(
+              child: Text(
+                'Add',
+                style: TextStyle(
+                  color: Colors.white,
                 ),
-                onPressed: () {
-                  onPressedCallback(currentTaskName);
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.lightBlueAccent,
-                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                if (currentTaskName == null) {
+                  return;
+                }
+                Provider.of<TaskData>(context, listen: false)
+                    .addTask(Task(name: currentTaskName));
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.lightBlueAccent,
               ),
             ),
           ],
