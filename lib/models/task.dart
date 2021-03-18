@@ -10,4 +10,12 @@ class Task {
   void toggleDone() {
     isDone = !isDone;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'textColor': textColor.toString(),
+      'isDone': isDone,
+    };
+  }
 }

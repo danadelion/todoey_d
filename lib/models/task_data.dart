@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todoey_d/models/task.dart';
+import 'package:todoey_d/models/task_database.dart';
 import 'dart:collection';
 
 class TaskData extends ChangeNotifier {
+  TaskDatabase _taskDatabase;
+
   List<Task> _tasks = [
     Task(
       name: 'Hint: swipe to delete',
@@ -14,6 +17,17 @@ class TaskData extends ChangeNotifier {
     ),
   ];
 
+  Task _loadingTask = Task(name: 'loading...');
+
+  TaskData(TaskDatabase taskDatabase) {
+    this._taskDatabase = taskDatabase;
+    this._tasks.add(this._loadingTask);
+    taskDatabase.fetchTasks().then((List<Task> value) {
+      this._tasks = value;
+      notifyListeners();
+    });
+  }
+
   UnmodifiableListView<Task> get tasks {
     return UnmodifiableListView(_tasks);
   }
@@ -24,6 +38,7 @@ class TaskData extends ChangeNotifier {
 
   void addTask(Task newTask) {
     _tasks.add(newTask);
+    _taskDatabase.insertTask(newTask);
     notifyListeners();
   }
 

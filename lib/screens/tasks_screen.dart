@@ -4,6 +4,7 @@ import 'package:todoey_d/screens/add_task_screen.dart';
 import 'package:todoey_d/models/task_data.dart';
 import 'package:provider/provider.dart';
 import 'package:todoey_d/models/task.dart';
+import 'dart:collection';
 
 class TasksScreen extends StatefulWidget {
   @override
@@ -18,10 +19,10 @@ class _TasksScreenState extends State<TasksScreen> {
     if (taskName == null) {
       return;
     }
-    setState(() {
-      Provider.of<TaskData>(context, listen: false)
-          .tasks
-          .add(Task(name: taskName));
+    setState(() async {
+      UnmodifiableListView<Task> tasks =
+          await Provider.of<TaskData>(context, listen: false).tasks;
+      tasks.add(Task(name: taskName));
     });
   }
 

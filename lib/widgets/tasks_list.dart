@@ -5,15 +5,17 @@ import 'package:provider/provider.dart';
 import 'package:todoey_d/models/task.dart';
 
 class TasksList extends StatelessWidget {
+  final List<Task> tasks;
+  TasksList({this.tasks});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskData>(
       builder: (context, taskData, child) {
         return ListView.builder(
           itemBuilder: (context, index) {
-            Task task = taskData.tasks[index];
             return TaskTile(
-              task: task,
+              task: taskData.tasks[index],
               index: index,
             );
           },
