@@ -6,6 +6,7 @@ import 'package:todoey_d/models/task_database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,10 +29,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TaskData taskData = TaskData(taskDatabase);
+
     return ChangeNotifierProvider(
-      create: (context) => TaskData(taskDatabase),
+      create: (context) => taskData,
       child: MaterialApp(
-        home: TasksScreen(),
+        home: taskData.isLoaded == true
+            ? SpinKitFadingCircle(
+                color: Colors.lightBlue[700],
+                size: 100.0,
+              )
+            : TasksScreen(),
       ),
     );
   }

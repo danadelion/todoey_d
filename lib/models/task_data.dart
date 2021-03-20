@@ -17,13 +17,13 @@ class TaskData extends ChangeNotifier {
     ),
   ];
 
-  Task _loadingTask = Task(name: 'loading...');
+  bool isLoaded = false;
 
   TaskData(TaskDatabase taskDatabase) {
     this._taskDatabase = taskDatabase;
-    this._tasks.add(this._loadingTask);
     taskDatabase.fetchTasks().then((List<Task> value) {
       this._tasks = value;
+      isLoaded = true;
       notifyListeners();
     });
   }
@@ -43,7 +43,9 @@ class TaskData extends ChangeNotifier {
   }
 
   void toggleTask(int index) {
-    _tasks[index].toggleDone();
+    Task task = _tasks[index];
+    task.toggleDone();
+    _taskDatabase.updateTask(task);
     notifyListeners();
   }
 

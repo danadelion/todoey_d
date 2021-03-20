@@ -15,7 +15,7 @@ class Task {
     return {
       'name': name,
       'textColor': textColor.toString(),
-      'isDone': isDone,
+      'isDone': isDone == true ? 1 : 0,
     };
   }
 }

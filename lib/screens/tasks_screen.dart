@@ -104,11 +104,3 @@ class _TasksScreenState extends State<TasksScreen> {
         ));
   }
 }
-
-//
-
-// child: ListView(
-// reverse: true,
-// padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-// children: messageBubbles,
-// ),
