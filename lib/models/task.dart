@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Task {
-  final String name;
+  int id;
+  String name;
   Color textColor;
   bool isDone;
 
-  Task({this.name, this.isDone = false, this.textColor: Colors.black});
+  Task({this.id, this.name, this.isDone = false, this.textColor: Colors.black});
 
   void toggleDone() {
     isDone = !isDone;
@@ -13,6 +14,7 @@ class Task {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'textColor': textColor.toString(),
       'isDone': isDone == true ? 1 : 0,

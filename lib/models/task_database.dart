@@ -14,6 +14,7 @@ class TaskDatabase {
 
     return List.generate(maps.length, (i) {
       return Task(
+        id: maps[i]['id'],
         name: maps[i]['name'],
         isDone: maps[i]['isDone'] == 1,
         // isDone: (maps[i]['isDone'] ? true : false),
@@ -33,7 +34,12 @@ class TaskDatabase {
 
   Future<void> updateTask(Task task) async {
     final Database db = await database;
-    await db.update(tableName, task.toMap(),
-        where: 'name = ?', whereArgs: [task.name]);
+    await db
+        .update(tableName, task.toMap(), where: 'id = ?', whereArgs: [task.id]);
+  }
+
+  Future<void> removeTask(Task task) async {
+    final Database db = await database;
+    await db.delete(tableName, where: 'id = ?', whereArgs: [task.id]);
   }
 }

@@ -9,15 +9,33 @@ import 'package:sqflite/sqflite.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
+  List<Function> migrationScripts = [
+    // (int oldVersion, int newVersion) {
+    //   if (oldVersion == 1) {
+    //     return 'DROP TABLE tasks';
+    //   }
+    // },
+    // (int oldVersion, int newVersion) {
+    //   if (oldVersion == 2) {
+    //     return 'CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, isDone BOOLEAN, textColor TEXT)';
+    //   }
+    // }
+  ];
+
   WidgetsFlutterBinding.ensureInitialized();
   final Future<Database> database = openDatabase(
-    join(await getDatabasesPath(), 'task_database.db'),
+    join(await getDatabasesPath(), 'tasks_database.db'),
     onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE tasks(name TEXT, isDone BOOLEAN, textColor TEXT)",
+        "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, isDone BOOLEAN, textColor TEXT)",
       );
     },
     version: 1,
+    onUpgrade: (Database db, int oldVersion, int newVersion) {
+      migrationScripts.forEach((script) {
+        return db.execute(script(oldVersion, newVersion));
+      });
+    },
   );
 
   runApp(MyApp(taskDatabase: TaskDatabase(database: database)));

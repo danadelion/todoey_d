@@ -1,27 +1,25 @@
+import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:todoey_d/widgets/task_tile.dart';
-import 'package:todoey_d/models/task_data.dart';
-import 'package:provider/provider.dart';
 import 'package:todoey_d/models/task.dart';
 
 class TasksList extends StatelessWidget {
-  final List<Task> tasks;
+  final UnmodifiableListView<Task> tasks;
+
   TasksList({this.tasks});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskData>(
-      builder: (context, taskData, child) {
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            return TaskTile(
-              task: taskData.tasks[index],
-              index: index,
-            );
-          },
-          itemCount: taskData.taskCount,
+    return ListView.builder(
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return TaskTile(
+          task: tasks[index],
+          index: index,
         );
       },
+      itemCount: tasks.length,
     );
   }
 }
+//itemCount: taskData.taskCount,

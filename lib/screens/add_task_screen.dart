@@ -4,13 +4,15 @@ import 'package:todoey_d/models/task_data.dart';
 import 'package:todoey_d/models/task.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  final Function onPressedCallback;
-
-  AddTaskScreen({this.onPressedCallback});
+  final Task task;
+  AddTaskScreen({this.task});
 
   @override
   Widget build(BuildContext context) {
     String currentTaskName;
+    TextEditingController _controller;
+
+    _controller = new TextEditingController(text: task.name);
 
     return Container(
       color: Color(0xFF757575),
@@ -27,7 +29,7 @@ class AddTaskScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Add Task',
+              task.id == null ? 'Add Task' : 'Edit Task',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 30.0,
@@ -37,6 +39,7 @@ class AddTaskScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                controller: _controller,
                 autofocus: true,
                 textAlign: TextAlign.center,
                 onChanged: (String text) {
@@ -46,7 +49,7 @@ class AddTaskScreen extends StatelessWidget {
             ),
             TextButton(
               child: Text(
-                'Add',
+                'Save',
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -56,8 +59,13 @@ class AddTaskScreen extends StatelessWidget {
                 if (currentTaskName == null) {
                   return;
                 }
-                Provider.of<TaskData>(context, listen: false)
-                    .addTask(Task(name: currentTaskName));
+                task.name = currentTaskName;
+                if (task.id == null) {
+                  Provider.of<TaskData>(context, listen: false).addTask(task);
+                } else {
+                  Provider.of<TaskData>(context, listen: false)
+                      .updateTask(task);
+                }
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.lightBlueAccent,
