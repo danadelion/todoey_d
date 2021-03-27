@@ -53,7 +53,7 @@ class _TasksScreenState extends State<TasksScreen> {
           children: [
             Container(
               padding: EdgeInsets.only(
-                top: 60.0,
+                top: 10.0,
                 left: 30.0,
                 right: 30.0,
                 bottom: 30.0,

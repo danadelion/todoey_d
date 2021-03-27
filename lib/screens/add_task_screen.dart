@@ -17,7 +17,7 @@ class AddTaskScreen extends StatelessWidget {
     return Container(
       color: Color(0xFF757575),
       child: Container(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -25,20 +25,19 @@ class AddTaskScreen extends StatelessWidget {
             topLeft: Radius.circular(20.0),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              task.id == null ? 'Add Task' : 'Edit Task',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 30.0,
-                color: Colors.lightBlueAccent,
+        child: Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                task.id == null ? 'Add Task' : 'Edit Task',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30.0,
+                  color: Colors.lightBlueAccent,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
+              TextField(
                 controller: _controller,
                 autofocus: true,
                 textAlign: TextAlign.center,
@@ -46,32 +45,32 @@ class AddTaskScreen extends StatelessWidget {
                   currentTaskName = text;
                 },
               ),
-            ),
-            TextButton(
-              child: Text(
-                'Save',
-                style: TextStyle(
-                  color: Colors.white,
+              TextButton(
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  if (currentTaskName == null) {
+                    return;
+                  }
+                  task.name = currentTaskName;
+                  if (task.id == null) {
+                    Provider.of<TaskData>(context, listen: false).addTask(task);
+                  } else {
+                    Provider.of<TaskData>(context, listen: false)
+                        .updateTask(task);
+                  }
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.lightBlueAccent,
                 ),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-                if (currentTaskName == null) {
-                  return;
-                }
-                task.name = currentTaskName;
-                if (task.id == null) {
-                  Provider.of<TaskData>(context, listen: false).addTask(task);
-                } else {
-                  Provider.of<TaskData>(context, listen: false)
-                      .updateTask(task);
-                }
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.lightBlueAccent,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
